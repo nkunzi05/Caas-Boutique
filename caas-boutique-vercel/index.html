@@ -41,16 +41,17 @@ a{color:inherit;text-decoration:none}
 .brand svg{width:26px;height:26px}
 .brand span{font-family:var(--serif);font-size:1.5rem;letter-spacing:.02em;font-weight:400}
 @media (max-width:720px){.top .wrap{height:64px}.top nav .hide-sm{display:none}.brand span{font-size:1.25rem}.brand svg{width:22px;height:22px}}
+@media (max-width:380px){.top nav{font-size:.85rem}.brand{gap:.5rem}.brand span{font-size:1.1rem}.brand svg{width:20px;height:20px}}
 
 /* Hero: full-bleed photo with text overlay */
-.hero{position:relative;height:calc(100svh - 76px);min-height:560px;max-height:980px;overflow:hidden;color:#fff;background:#0f1a2b}
+.hero{position:relative;display:flex;flex-direction:column;min-height:clamp(560px,calc(100vh - 76px),980px);min-height:clamp(560px,calc(100svh - 76px),980px);overflow:hidden;color:#fff;background:#0f1a2b}
 .hero .photo{position:absolute;inset:0;background:#0f1a2b}
 .hero .photo img{object-position:42% 45%;filter:saturate(.9) contrast(1.05);transform:scale(1.06);animation:settle 2.4s cubic-bezier(.2,.7,.2,1) forwards}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,18,32,.78) 0%,rgba(10,18,32,.45) 42%,rgba(10,18,32,0) 72%),linear-gradient(0deg,rgba(10,18,32,.55) 0%,rgba(10,18,32,0) 45%);pointer-events:none}
-.hero .copy{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:clamp(3rem,8vh,6rem)}
+.hero .copy{position:relative;z-index:1;flex:1 0 auto;display:flex;flex-direction:column;justify-content:flex-end;padding-top:clamp(2.5rem,9vh,6rem);padding-bottom:clamp(3rem,8vh,6rem)}
 .hero .kicker{font-size:.95rem;opacity:.85;margin:0 0 1.25rem;display:flex;align-items:center;gap:.75rem}
 .hero .kicker::before{content:"";width:2.5rem;height:1px;background:currentColor}
-.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(3rem,7vw,6.8rem);line-height:.98;letter-spacing:-.025em;margin:0 0 1.5rem;max-width:11ch}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.5rem,min(7vw,10.5vh),6.8rem);line-height:.98;letter-spacing:-.025em;margin:0 0 1.5rem;max-width:12ch}
 .hero p{max-width:40ch;margin:0 0 2.25rem;font-size:1.08rem;opacity:.88}
 .hero .ctas{display:flex;gap:1rem;flex-wrap:wrap}
 .btn-light{display:inline-block;background:#fff;color:#1B2A3E;padding:1rem 2rem;font-size:.95rem;letter-spacing:.02em;transition:opacity .3s}
@@ -62,7 +63,8 @@ a{color:inherit;text-decoration:none}
 @keyframes settle{to{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.fade,.hero .photo img{animation:none;opacity:1;transform:none}html{scroll-behavior:auto}}
 @media (max-width:860px){
-  .hero{height:calc(100svh - 64px);min-height:600px}
+  .hero{min-height:clamp(520px,calc(100vh - 64px),980px);min-height:clamp(520px,calc(100svh - 64px),980px)}
+  .hero h1{font-size:clamp(2.4rem,11vw,3.6rem)}
   .hero .photo img{object-position:38% center}
   .hero::after{background:linear-gradient(0deg,rgba(10,18,32,.88) 0%,rgba(10,18,32,.5) 45%,rgba(10,18,32,.05) 75%)}
   .hero .addr{display:none}
@@ -154,7 +156,7 @@ footer small{color:var(--muted)}
 
 <header class="top">
   <div class="wrap">
-    <nav aria-label="Main"><a href="#collections">Collections</a><a href="#new-in" class="hide-sm">New in</a></nav>
+    <nav aria-label="Main"><a href="#new-in">New in</a><a href="#collections" class="hide-sm">Collections</a></nav>
     <a class="brand" href="#top" aria-label="Caas Boutique home"><svg aria-hidden="true"><use href="#logo"/></svg><span>Caas Boutique</span></a>
     <nav class="r" aria-label="Secondary"><a href="#visit" class="hide-sm">Visit</a><a data-wa="Hello Caas Boutique, I'd like to ask about your stock." href="#">Enquire</a></nav>
   </div>
@@ -175,6 +177,16 @@ footer small{color:var(--muted)}
   <section class="statement wrap">
     <p>We don't sell online. Browse the collections here, then come in, try it on, and take your time.</p>
     <small>New pieces arrive often and rarely stay long.</small>
+  </section>
+
+  <section class="newin" id="new-in">
+    <div class="wrap">
+      <div class="head">
+        <h2>New in</h2>
+        <div class="rail-ctl"><button aria-label="Scroll back" data-dir="-1">←</button><button aria-label="Scroll forward" data-dir="1">→</button></div>
+      </div>
+      <div class="rail" id="rail"></div>
+    </div>
   </section>
 
   <section class="collections wrap" id="collections">
@@ -216,16 +228,6 @@ footer small{color:var(--muted)}
     </div>
   </section>
 
-  <section class="newin" id="new-in">
-    <div class="wrap">
-      <div class="head">
-        <h2>New in</h2>
-        <div class="rail-ctl"><button aria-label="Scroll back" data-dir="-1">←</button><button aria-label="Scroll forward" data-dir="1">→</button></div>
-      </div>
-      <div class="rail" id="rail"></div>
-    </div>
-  </section>
-
   <section class="visit" id="visit">
     <div class="wrap">
       <div class="photo"><img data-img="7908" alt="Inside Caas Boutique: mannequins in a mustard print maxi and a black embellished gown with a red hat" loading="lazy"></div>
@@ -245,7 +247,7 @@ footer small{color:var(--muted)}
 <footer>
   <div class="wrap">
     <a class="brand" href="#top"><svg aria-hidden="true"><use href="#logo"/></svg><span>Caas Boutique</span></a>
-    <nav><a href="#collections">Collections</a><a href="#new-in">New in</a><a href="#visit">Visit</a></nav>
+    <nav><a href="#new-in">New in</a><a href="#collections">Collections</a><a href="#visit">Visit</a></nav>
     <small>© <span id="yr"></span> Caas Boutique</small>
   </div>
 </footer>
@@ -264,7 +266,7 @@ footer small{color:var(--muted)}
 </dialog>
 
 <script>
-const IMGS = {"7902": "images/7902.jpg", "7903": "images/7903.jpg", "7905": "images/7905.jpg", "7906": "images/7906.jpg", "7908": "images/7908.jpg", "7909": "images/7909.jpg", "7910": "images/7910.jpg", "7911": "images/7911.jpg", "7914": "images/7914.jpg", "7915": "images/7915.jpg", "7922": "images/7922.jpg", "hero": "images/hero.jpg", "new01": "images/new01.jpg", "new02": "images/new02.jpg", "new03": "images/new03.jpg", "new04": "images/new04.jpg", "new05": "images/new05.jpg", "new06": "images/new06.jpg", "new07": "images/new07.jpg", "new08": "images/new08.jpg", "new09": "images/new09.jpg"};
+const IMGS = {"7902": "images/7902.jpg", "7903": "images/7903.jpg", "7905": "images/7905.jpg", "7908": "images/7908.jpg", "7910": "images/7910.jpg", "7915": "images/7915.jpg", "7922": "images/7922.jpg", "hero": "images/hero.jpg", "new01": "images/new01.jpg", "new02": "images/new02.jpg", "new03": "images/new03.jpg", "new04": "images/new04.jpg", "new05": "images/new05.jpg", "new06": "images/new06.jpg", "new07": "images/new07.jpg", "new08": "images/new08.jpg", "new09": "images/new09.jpg"};
 
 /* ===== EDIT HERE =====
    WHATSAPP: the shop's number, international format, digits only (e.g. 263771234567).
@@ -289,19 +291,7 @@ const NEW_IN = [
   { img:"new08", title:"Powder blue ruffle dress", date:"This week",
     note:"Sleeveless, with a cascade of soft chiffon ruffles from the hip." },
   { img:"new09", title:"Hot pink ruffle dress", date:"This week",
-    note:"The ruffle dress in a bold pink. Limited sizes." },
-  { img:"7906", title:"Tiered ruffle maxi", date:"Last week",
-    note:"A hot pink tiered ruffle dress, shown with a lime eyelet shirt dress. Limited sizes." },
-  { img:"7911", title:"Button wrap dresses", date:"Last week",
-    note:"Wine, rust, blush and cobalt, alongside striped pinafore dresses." },
-  { img:"7910", title:"Gold-foil blouses", date:"Last week",
-    note:"Sheer chiffon with a tie neck, and black shirts with gold buttons." },
-  { img:"7909", title:"Statement maxis", date:"Earlier",
-    note:"Painterly orange prints, lime and violet. Bold colour for big occasions." },
-  { img:"7914", title:"In the window", date:"Earlier",
-    note:"Silk paisley shirts for him, embellished floral gowns for her, and hats to match." },
-  { img:"7915", title:"Fascinators", date:"Earlier",
-    note:"Feathered fascinators in yellow, red and green, and soft faux-fur hats." }
+    note:"The ruffle dress in a bold pink. Limited sizes." }
 ];
 
 const waLink = m => "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(m);
