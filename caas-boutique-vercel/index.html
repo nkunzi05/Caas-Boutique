@@ -45,8 +45,18 @@ a{color:inherit;text-decoration:none}
 
 /* Hero: full-bleed photo with text overlay */
 .hero{position:relative;display:flex;flex-direction:column;min-height:clamp(560px,calc(100vh - 76px),980px);min-height:clamp(560px,calc(100svh - 76px),980px);overflow:hidden;color:#fff;background:#0f1a2b}
-.hero .photo{position:absolute;inset:0;background:#0f1a2b}
-.hero .photo img{object-position:42% 45%;filter:saturate(.9) contrast(1.05);transform:scale(1.06);animation:settle 2.4s cubic-bezier(.2,.7,.2,1) forwards}
+.hero .slides{position:absolute;inset:0;background:#0f1a2b}
+.hero .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--pos,50% 50%);opacity:0;transform:scale(1.06);filter:saturate(.9) contrast(1.05);transition:opacity 1.6s cubic-bezier(.4,0,.2,1)}
+.hero .slide.on{opacity:1;animation:drift 9s linear forwards}
+@keyframes drift{from{transform:scale(1.06)}to{transform:scale(1)}}
+.hero .dots{display:flex;gap:.6rem;margin-top:clamp(1.5rem,4vh,2.5rem);margin-left:-1px}
+.hero .dots button{position:relative;width:34px;height:24px;padding:0;border:0;background:none;cursor:pointer}
+.hero .dots button::before,.hero .dots button::after{content:"";position:absolute;left:0;right:0;top:11px;height:2px;background:rgba(255,255,255,.35)}
+.hero .dots button::after{background:#fff;transform:scaleX(0);transform-origin:left}
+.hero .dots button.on::after{transform:scaleX(1)}
+.hero.auto .dots button.on::after{animation:fill var(--dur,7s) linear forwards}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.hero .dots button:focus-visible{outline:1px solid #fff;outline-offset:2px}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,18,32,.78) 0%,rgba(10,18,32,.45) 42%,rgba(10,18,32,0) 72%),linear-gradient(0deg,rgba(10,18,32,.55) 0%,rgba(10,18,32,0) 45%);pointer-events:none}
 .hero .copy{position:relative;z-index:1;flex:1 0 auto;display:flex;flex-direction:column;justify-content:flex-end;padding-top:clamp(2.5rem,9vh,6rem);padding-bottom:clamp(3rem,8vh,6rem)}
 .hero .kicker{font-size:.95rem;opacity:.85;margin:0 0 1.25rem;display:flex;align-items:center;gap:.75rem}
@@ -60,12 +70,11 @@ a{color:inherit;text-decoration:none}
 .hero .addr{position:absolute;z-index:1;right:clamp(1.5rem,3vw,3rem);bottom:clamp(3rem,8vh,6rem);text-align:right;font-size:.9rem;opacity:.85;line-height:1.5}
 .fade{opacity:0;transform:translateY(16px);animation:in 1.2s .3s cubic-bezier(.2,.7,.2,1) forwards}
 @keyframes in{to{opacity:1;transform:none}}
-@keyframes settle{to{transform:scale(1)}}
-@media (prefers-reduced-motion:reduce){.fade,.hero .photo img{animation:none;opacity:1;transform:none}html{scroll-behavior:auto}}
+@media (prefers-reduced-motion:reduce){.fade{animation:none;opacity:1;transform:none}.hero .slide{transform:none;transition:opacity .3s}.hero .slide.on{animation:none}html{scroll-behavior:auto}}
 @media (max-width:860px){
   .hero{min-height:clamp(520px,calc(100vh - 64px),980px);min-height:clamp(520px,calc(100svh - 64px),980px)}
   .hero h1{font-size:clamp(2.4rem,11vw,3.6rem)}
-  .hero .photo img{object-position:38% center}
+  .hero .slide{object-position:var(--pos-m,50% 50%)}
   .hero::after{background:linear-gradient(0deg,rgba(10,18,32,.88) 0%,rgba(10,18,32,.5) 45%,rgba(10,18,32,.05) 75%)}
   .hero .addr{display:none}
 }
@@ -116,6 +125,16 @@ dialog p{margin:0 0 2rem;color:var(--muted)}
 dialog .close{position:absolute;top:1rem;right:1rem;background:none;border:0;color:var(--ink);font-size:.95rem;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
 @media (max-width:700px){dialog .lbx{grid-template-columns:1fr}dialog .photo{aspect-ratio:4/4}dialog .db{padding:1.75rem 1.5rem 2rem}}
 
+/* Inside the boutique */
+.inside{padding:0 0 clamp(5rem,10vw,8rem)}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:clamp(200px,22vw,320px);gap:1rem}
+.gallery figure{margin:0;position:relative}
+.gallery .photo{height:100%}
+.gallery .w2{grid-column:span 2}
+.gallery .h2{grid-row:span 2}
+.gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:2.5rem 1rem .85rem;color:#fff;font-size:.88rem;line-height:1.35;background:linear-gradient(0deg,rgba(10,18,32,.62),rgba(10,18,32,0))}
+@media (max-width:700px){.gallery{grid-template-columns:1fr 1fr;grid-auto-rows:auto;grid-auto-flow:dense}.gallery figure{grid-column:span 2;aspect-ratio:16/10}.gallery .h2{grid-row:auto;grid-column:span 1;aspect-ratio:3/4}.gallery .half{grid-column:span 1;aspect-ratio:3/4}}
+
 /* Visit */
 .visit{padding:clamp(5rem,10vw,8rem) 0}
 .visit .wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,6rem);align-items:center}
@@ -164,12 +183,18 @@ footer small{color:var(--muted)}
 
 <main id="top">
   <section class="hero">
-    <div class="photo"><img data-img="hero" alt="Mannequins in blue occasion wear: a teal jacket over a floral dress, a silk floral shirt dress, a cobalt and silver jacquard two-piece and a pale blue ruffle gown"></div>
+    <div class="slides" role="img" aria-label="Inside Caas Boutique: occasion wear, dresses, menswear and accessories">
+      <img class="slide on" data-img="hero" alt="" style="--pos:42% 45%;--pos-m:38% center">
+      <img class="slide" data-lazy="hero2" alt="" style="--pos:50% 50%;--pos-m:15% center">
+      <img class="slide" data-lazy="hero3" alt="" style="--pos:50% 55%;--pos-m:43% center">
+      <img class="slide" data-lazy="hero4" alt="" style="--pos:55% 50%;--pos-m:68% center">
+    </div>
     <div class="copy wrap fade">
-      <p class="kicker">The blue edit, in store now</p>
+      <p class="kicker">New stock in store now</p>
       <h1>Where Bulawayo comes to dress up.</h1>
       <p>Occasion dresses, statement hats, menswear and handbags, chosen piece by piece and found only in our store.</p>
       <div class="ctas"><a class="btn-light" href="#new-in">See what's new</a><a class="btn-ghost" href="#visit">Visit the boutique</a></div>
+      <div class="dots" aria-label="Choose a photo"></div>
     </div>
     <p class="addr fade">Corner 3rd Avenue &amp;<br>Herbert Chitepo Street, Bulawayo</p>
   </section>
@@ -201,9 +226,19 @@ footer small{color:var(--muted)}
         <a class="link" data-wa="Hello Caas Boutique, I'd like to ask about your dresses." href="#">Enquire</a>
       </article>
       <article class="item">
-        <div class="photo"><img data-img="7915" alt="Feather fascinators, a white faux-fur hat and a tan leather handbag in a glass cabinet" loading="lazy" style="object-position:30% center"></div>
-        <h3>Hats &amp; fascinators</h3><p>Felt cloches, feathered fedoras and fascinators to finish the look.</p>
-        <a class="link" data-wa="Hello Caas Boutique, I'd like to ask about hats and fascinators." href="#">Enquire</a>
+        <div class="photo"><img data-img="sets" alt="Tailored jackets in cobalt and mustard over matching floral dresses" loading="lazy" style="object-position:72% center"></div>
+        <h3>Two-piece sets</h3><p>Tailored jackets over matching dresses and skirts, ready for the big day.</p>
+        <a class="link" data-wa="Hello Caas Boutique, I'd like to ask about your two-piece sets." href="#">Enquire</a>
+      </article>
+      <article class="item">
+        <div class="photo"><img data-img="hats" alt="Occasion hats in gold, mustard, black and white sinamay on a glass counter" loading="lazy" style="object-position:61% center"></div>
+        <h3>Occasion hats</h3><p>Wide-brim sinamay hats with flowers, bows and feathers.</p>
+        <a class="link" data-wa="Hello Caas Boutique, I'd like to ask about your occasion hats." href="#">Enquire</a>
+      </article>
+      <article class="item">
+        <div class="photo"><img data-img="fascinators" alt="A wall of fascinators in navy, gold, green, pink, black, cream, cobalt and red" loading="lazy" style="object-position:50% center"></div>
+        <h3>Fascinators</h3><p>Feathers, loops and netting in every colour, to match any outfit.</p>
+        <a class="link" data-wa="Hello Caas Boutique, I'd like to ask about fascinators." href="#">Enquire</a>
       </article>
       <article class="item">
         <div class="photo"><img data-img="7922" alt="Men's paisley, linen and printed shirts above a rail of jackets, with a mannequin in a two-tone varsity jacket" loading="lazy" style="object-position:45% center"></div>
@@ -217,14 +252,33 @@ footer small{color:var(--muted)}
       </article>
       <article class="item">
         <div class="photo"><img data-img="7903" alt="A wall of structured handbags in black, tan, navy and striped canvas" loading="lazy"></div>
-        <h3>Handbags</h3><p>Structured leather-look bags, canvas totes and travel cases.</p>
+        <h3>Handbags</h3><p>Structured leather-look bags, canvas totes and clutches.</p>
         <a class="link" data-wa="Hello Caas Boutique, I'd like to ask about handbags." href="#">Enquire</a>
+      </article>
+      <article class="item">
+        <div class="photo"><img data-img="luggage" alt="Soft-shell suitcase sets in navy, cobalt and brown" loading="lazy" style="object-position:67% center"></div>
+        <h3>Luggage</h3><p>Suitcase sets in three sizes, soft-shell and hard-shell.</p>
+        <a class="link" data-wa="Hello Caas Boutique, I'd like to ask about luggage." href="#">Enquire</a>
       </article>
       <article class="item">
         <div class="photo"><img data-img="7905" alt="Children's school backpacks with matching lunch bags" loading="lazy"></div>
         <h3>For the children</h3><p>School backpacks with matching lunch bags.</p>
         <a class="link" data-wa="Hello Caas Boutique, I'd like to ask about school bags." href="#">Enquire</a>
       </article>
+    </div>
+  </section>
+
+  <section class="inside wrap" id="inside">
+    <div class="head">
+      <h2>Inside the boutique</h2>
+      <p>Racks of dresses, a wall of handbags and a counter full of hats. Come in and take your time.</p>
+    </div>
+    <div class="gallery">
+      <figure class="w2"><div class="photo"><img data-img="shop-bags" alt="Inside the boutique: pink ruffle dresses, blouses and a wall of handbags and school backpacks" loading="lazy" style="object-position:50% 45%"></div><figcaption>Handbags &amp; school bags</figcaption></figure>
+      <figure class="h2"><div class="photo"><img data-img="fascinator-worn" alt="A gold sinamay fascinator with feathers, worn in store" loading="lazy" style="object-position:50% 30%"></div><figcaption>Gold sinamay fascinator</figcaption></figure>
+      <figure class="w2"><div class="photo"><img data-img="shop-rails" alt="Rails of dresses and a powder blue ruffle dress, with lingerie on the wall behind" loading="lazy" style="object-position:50% 50%"></div><figcaption>Dresses &amp; lingerie</figcaption></figure>
+      <figure class="half"><div class="photo"><img data-img="hats-occasion" alt="Two wide-brim occasion hats, burgundy and white, with feathers and bows" loading="lazy" style="object-position:30% 50%"></div><figcaption>Occasion hats</figcaption></figure>
+      <figure class="w2"><div class="photo"><img data-img="pillbox" alt="Pillbox fascinators in white, green, red, cream, tan, pink, navy and black" loading="lazy" style="object-position:50% 50%"></div><figcaption>Pillbox fascinators</figcaption></figure>
     </div>
   </section>
 
@@ -266,7 +320,13 @@ footer small{color:var(--muted)}
 </dialog>
 
 <script>
-const IMGS = {"7902": "images/7902.jpg", "7903": "images/7903.jpg", "7905": "images/7905.jpg", "7908": "images/7908.jpg", "7910": "images/7910.jpg", "7915": "images/7915.jpg", "7922": "images/7922.jpg", "hero": "images/hero.jpg", "new01": "images/new01.jpg", "new02": "images/new02.jpg", "new03": "images/new03.jpg", "new04": "images/new04.jpg", "new05": "images/new05.jpg", "new06": "images/new06.jpg", "new07": "images/new07.jpg", "new08": "images/new08.jpg", "new09": "images/new09.jpg"};
+const IMGS = {
+  "hero": "images/hero.jpg", "hero2": "images/hero-2.jpg", "hero3": "images/hero-3.jpg", "hero4": "images/hero-4.jpg",
+  "7902": "images/7902.jpg", "7903": "images/7903.jpg", "7905": "images/7905.jpg", "7908": "images/7908.jpg", "7910": "images/7910.jpg", "7922": "images/7922.jpg",
+  "sets": "images/sets.jpg", "hats": "images/hats.jpg", "fascinators": "images/fascinators.jpg", "luggage": "images/luggage.jpg",
+  "shop-bags": "images/shop-bags.jpg", "shop-rails": "images/shop-rails.jpg", "fascinator-worn": "images/fascinator-worn.jpg", "hats-occasion": "images/hats-occasion.jpg", "pillbox": "images/pillbox.jpg",
+  "new01": "images/new01.jpg", "new02": "images/new02.jpg", "new03": "images/new03.jpg", "new04": "images/new04.jpg", "new05": "images/new05.jpg", "new06": "images/new06.jpg", "new07": "images/new07.jpg", "new08": "images/new08.jpg", "new09": "images/new09.jpg"
+};
 
 /* ===== EDIT HERE =====
    WHATSAPP: the shop's number, international format, digits only (e.g. 263771234567).
@@ -298,6 +358,34 @@ const waLink = m => "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(
 document.querySelectorAll("img[data-img]").forEach(i => i.src = IMGS[i.dataset.img]);
 document.querySelectorAll("[data-wa]").forEach(a => { a.href = waLink(a.dataset.wa); a.target = "_blank"; a.rel = "noopener"; });
 document.getElementById("yr").textContent = new Date().getFullYear();
+
+/* Hero slideshow */
+(() => {
+  const hero = document.querySelector(".hero"), slides = [...hero.querySelectorAll(".slide")], dotsEl = hero.querySelector(".dots");
+  const DUR = 7000, still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let cur = 0, timer = null;
+  const load = sl => { if (sl.dataset.lazy && !sl.src) sl.src = IMGS[sl.dataset.lazy]; };
+  const dots = slides.map((_, n) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.setAttribute("aria-label", "Show photo " + (n + 1) + " of " + slides.length);
+    b.addEventListener("click", () => { go(n); restart(); });
+    dotsEl.appendChild(b); return b;
+  });
+  function go(n) {
+    slides[cur].classList.remove("on"); dots[cur].classList.remove("on"); dots[cur].removeAttribute("aria-current");
+    cur = (n + slides.length) % slides.length;
+    load(slides[cur]); load(slides[(cur + 1) % slides.length]);
+    void dots[cur].offsetWidth;
+    slides[cur].classList.add("on"); dots[cur].classList.add("on"); dots[cur].setAttribute("aria-current", "true");
+  }
+  function restart() { clearInterval(timer); if (!still && !document.hidden) timer = setInterval(() => go(cur + 1), DUR); }
+  hero.style.setProperty("--dur", DUR + "ms");
+  if (!still) hero.classList.add("auto");
+  dots[0].classList.add("on"); dots[0].setAttribute("aria-current", "true");
+  addEventListener("load", () => slides.forEach(load));
+  document.addEventListener("visibilitychange", () => { if (document.hidden) clearInterval(timer); else { go(cur); restart(); } });
+  restart();
+})();
 
 const rail = document.getElementById("rail"), lb = document.getElementById("lb");
 NEW_IN.forEach(item => {
