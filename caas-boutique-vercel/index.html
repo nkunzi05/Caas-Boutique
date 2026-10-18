@@ -127,13 +127,11 @@ dialog .close{position:absolute;top:1rem;right:1rem;background:none;border:0;col
 
 /* Inside the boutique */
 .inside{padding:0 0 clamp(5rem,10vw,8rem)}
-.gallery{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:clamp(200px,22vw,320px);gap:1rem}
+.gallery{display:grid;grid-template-columns:repeat(2,1fr);grid-auto-rows:clamp(220px,26vw,380px);gap:1rem}
 .gallery figure{margin:0;position:relative}
 .gallery .photo{height:100%}
-.gallery .w2{grid-column:span 2}
-.gallery .h2{grid-row:span 2}
 .gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:2.5rem 1rem .85rem;color:#fff;font-size:.88rem;line-height:1.35;background:linear-gradient(0deg,rgba(10,18,32,.62),rgba(10,18,32,0))}
-@media (max-width:700px){.gallery{grid-template-columns:1fr 1fr;grid-auto-rows:auto;grid-auto-flow:dense}.gallery figure{grid-column:span 2;aspect-ratio:16/10}.gallery .h2{grid-row:auto;grid-column:span 1;aspect-ratio:3/4}.gallery .half{grid-column:span 1;aspect-ratio:3/4}}
+@media (max-width:700px){.gallery{grid-template-columns:1fr;grid-auto-rows:auto}.gallery figure{aspect-ratio:16/10}}
 
 /* Visit */
 .visit{padding:clamp(5rem,10vw,8rem) 0}
@@ -274,11 +272,10 @@ footer small{color:var(--muted)}
       <p>Racks of dresses, a wall of handbags and a counter full of hats. Come in and take your time.</p>
     </div>
     <div class="gallery">
-      <figure class="w2"><div class="photo"><img data-img="shop-bags" alt="Inside the boutique: pink ruffle dresses, blouses and a wall of handbags and school backpacks" loading="lazy" style="object-position:50% 45%"></div><figcaption>Handbags &amp; school bags</figcaption></figure>
-      <figure class="h2"><div class="photo"><img data-img="fascinator-worn" alt="A gold sinamay fascinator with feathers, worn in store" loading="lazy" style="object-position:50% 30%"></div><figcaption>Gold sinamay fascinator</figcaption></figure>
-      <figure class="w2"><div class="photo"><img data-img="shop-rails" alt="Rails of dresses and a powder blue ruffle dress, with lingerie on the wall behind" loading="lazy" style="object-position:50% 50%"></div><figcaption>Dresses &amp; lingerie</figcaption></figure>
-      <figure class="half"><div class="photo"><img data-img="hats-occasion" alt="Two wide-brim occasion hats, burgundy and white, with feathers and bows" loading="lazy" style="object-position:30% 50%"></div><figcaption>Occasion hats</figcaption></figure>
-      <figure class="w2"><div class="photo"><img data-img="pillbox" alt="Pillbox fascinators in white, green, red, cream, tan, pink, navy and black" loading="lazy" style="object-position:50% 50%"></div><figcaption>Pillbox fascinators</figcaption></figure>
+      <figure><div class="photo"><img data-img="shop-bags" alt="Inside the boutique: pink ruffle dresses, blouses and a wall of handbags and school backpacks" loading="lazy" style="object-position:50% 45%"></div><figcaption>Handbags &amp; school bags</figcaption></figure>
+      <figure><div class="photo"><img data-img="shop-rails" alt="Rails of dresses and a powder blue ruffle dress, with lingerie on the wall behind" loading="lazy" style="object-position:50% 50%"></div><figcaption>Dresses &amp; lingerie</figcaption></figure>
+      <figure><div class="photo"><img data-img="hats-occasion" alt="Two wide-brim occasion hats, burgundy and white, with feathers and bows" loading="lazy" style="object-position:30% 50%"></div><figcaption>Occasion hats</figcaption></figure>
+      <figure><div class="photo"><img data-img="pillbox" alt="Pillbox fascinators in white, green, red, cream, tan, pink, navy and black" loading="lazy" style="object-position:50% 50%"></div><figcaption>Pillbox fascinators</figcaption></figure>
     </div>
   </section>
 
@@ -324,7 +321,7 @@ const IMGS = {
   "hero": "images/hero.jpg", "hero2": "images/hero-2.jpg", "hero3": "images/hero-3.jpg", "hero4": "images/hero-4.jpg",
   "7902": "images/7902.jpg", "7903": "images/7903.jpg", "7905": "images/7905.jpg", "7908": "images/7908.jpg", "7910": "images/7910.jpg", "7922": "images/7922.jpg",
   "sets": "images/sets.jpg", "hats": "images/hats.jpg", "fascinators": "images/fascinators.jpg", "luggage": "images/luggage.jpg",
-  "shop-bags": "images/shop-bags.jpg", "shop-rails": "images/shop-rails.jpg", "fascinator-worn": "images/fascinator-worn.jpg", "hats-occasion": "images/hats-occasion.jpg", "pillbox": "images/pillbox.jpg",
+  "shop-bags": "images/shop-bags.jpg", "shop-rails": "images/shop-rails.jpg", "hats-occasion": "images/hats-occasion.jpg", "pillbox": "images/pillbox.jpg",
   "new01": "images/new01.jpg", "new02": "images/new02.jpg", "new03": "images/new03.jpg", "new04": "images/new04.jpg", "new05": "images/new05.jpg", "new06": "images/new06.jpg", "new07": "images/new07.jpg", "new08": "images/new08.jpg", "new09": "images/new09.jpg"
 };
 
