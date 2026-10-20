@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Hanken+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.css">
 <style>
 :root{
   --paper:#FFFFFF; --stone:#F1F1EF; --ink:#1B2A3E; --muted:#6C727E; --line:#DCDDE0;
@@ -382,7 +383,7 @@ dialog .close{z-index:2;padding:.55rem 1rem;border-radius:999px;text-decoration:
   </div>
 </footer>
 
-<dialog id="lb" aria-labelledby="lbTitle">
+<dialog data-lenis-prevent id="lb" aria-labelledby="lbTitle">
   <button class="close" onclick="document.getElementById('lb').close()">Close</button>
   <div class="lbx">
     <div class="photo"><img id="lbImg" alt=""></div>
@@ -486,6 +487,48 @@ document.querySelectorAll(".rail-ctl button").forEach(btn => btn.addEventListene
   rail.scrollBy({ left: +btn.dataset.dir * rail.clientWidth * 0.8, behavior: "smooth" });
 }));
 lb.addEventListener("click", e => { if (e.target === lb) lb.close(); });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.27/dist/lenis.min.js"></script>
+<script>
+/* Smooth scroll (Lenis) + scroll animations (GSAP). Skipped for people who prefer reduced motion. */
+(() => {
+  if (!window.gsap || !window.Lenis || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+
+  const lenis = new Lenis({ anchors: { offset: -80 } });
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000));
+  gsap.ticker.lagSmoothing(0);
+  document.documentElement.style.scrollBehavior = "auto";
+  const lb = document.getElementById("lb");
+  if (lb) {
+    new MutationObserver(() => lb.open ? lenis.stop() : lenis.start()).observe(lb, { attributes: true, attributeFilter: ["open"] });
+  }
+
+  document.fonts.ready.then(() => {
+    document.querySelectorAll("main h2, section h2").forEach(h => {
+      const split = SplitText.create(h, { type: "lines, words", mask: "lines", aria: "auto" });
+      gsap.from(split.words, {
+        yPercent: 110, duration: 1, ease: "power3.out", stagger: 0.06,
+        scrollTrigger: { trigger: h, start: "top 88%", once: true }
+      });
+    });
+  });
+
+  gsap.from(".statement > *", {
+    opacity: 0, y: 24, duration: 1.1, ease: "power2.out", stagger: 0.15,
+    scrollTrigger: { trigger: ".statement", start: "top 85%", once: true }
+  });
+
+  gsap.set(".collections .item", { opacity: 0, y: 40 });
+  ScrollTrigger.batch(".collections .item", {
+    start: "top 90%", once: true,
+    onEnter: els => gsap.to(els, { opacity: 1, y: 0, duration: 1, ease: "power3.out", stagger: 0.12 })
+  });
+})();
 </script>
 </body>
 </html>
